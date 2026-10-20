@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tahvia theme documentation</title>
+  <meta name="description" content="Documentation for Tahvia, a Shopify theme for brands that sell one hero product. Setup, settings, sections, product pages, FAQ and support.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,500&family=Jost:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0b1220;
+      --panel: #111a2c;
+      --fg: #eef0f2;
+      --muted: #a3afc2;
+      --line: rgb(238 240 242 / 0.14);
+      --accent: #f1a487;
+      --serif: 'Bodoni Moda', Georgia, serif;
+      --sans: 'Jost', system-ui, sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; }
+    html { scroll-padding-top: 2rem; }
+    body {
+      background: var(--bg);
+      color: var(--fg);
+      font: 400 1.0625rem/1.65 var(--sans);
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-underline-offset: 0.2em; }
+    a:hover { color: var(--accent); }
+    :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+    .skip { position: absolute; left: 1rem; top: -4rem; background: var(--accent); color: var(--bg); padding: 0.6rem 1rem; border-radius: 99px; }
+    .skip:focus { top: 1rem; }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: clamp(3rem, 8vw, 7rem) clamp(1.25rem, 5vw, 4rem) clamp(2.5rem, 6vw, 5rem);
+      border-bottom: 1px solid var(--line);
+      background:
+        radial-gradient(circle at 78% 40%, transparent 0 18%, rgb(0 0 0 / 0.35) 70%),
+        conic-gradient(from 300deg at 78% 40%, rgb(201 214 238 / 0.14), transparent 48deg, transparent 132deg, rgb(201 214 238 / 0.08) 180deg, transparent 228deg, transparent 312deg, rgb(201 214 238 / 0.14)),
+        var(--bg);
+    }
+    .hero p.label { color: var(--muted); font-size: 0.9rem; }
+    .hero h1 {
+      font: 500 clamp(3.4rem, 11vw, 9rem)/0.9 var(--serif);
+      letter-spacing: -0.03em;
+      margin: 0.75rem 0 1.5rem;
+    }
+    .hero .lede { max-width: 36rem; font-size: clamp(1.15rem, 1rem + 0.6vw, 1.45rem); line-height: 1.4; }
+    .hero .meta { margin-top: 2rem; display: flex; flex-wrap: wrap; gap: 0.75rem; }
+    .pill {
+      display: inline-flex; align-items: center; min-height: 44px; padding: 0 1.25rem;
+      border-radius: 99px; border: 1px solid var(--line); text-decoration: none; font-weight: 500; font-size: 0.95rem;
+    }
+    .pill--primary { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+    .pill--primary:hover { color: var(--bg); background: var(--fg); border-color: var(--fg); }
+
+    .layout {
+      display: grid;
+      gap: 3rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: clamp(2.5rem, 6vw, 5rem) clamp(1.25rem, 5vw, 4rem) 6rem;
+    }
+    @media (min-width: 900px) {
+      .layout { grid-template-columns: 240px minmax(0, 1fr); }
+      nav.toc { position: sticky; top: 2rem; align-self: start; }
+    }
+    nav.toc p { color: var(--muted); font-size: 0.85rem; margin-bottom: 0.75rem; }
+    nav.toc ol { list-style: none; padding: 0; counter-reset: toc; border-top: 1px solid var(--line); }
+    nav.toc li { counter-increment: toc; border-bottom: 1px solid var(--line); }
+    nav.toc a { display: flex; gap: 0.75rem; padding: 0.6rem 0; text-decoration: none; font-size: 0.95rem; }
+    nav.toc a::before { content: counter(toc, decimal-leading-zero); color: var(--accent); font-size: 0.8rem; padding-top: 0.15rem; }
+
+    main { counter-reset: section; max-width: 46rem; }
+    section { padding-top: 1.5rem; border-top: 1px solid var(--line); margin-bottom: 4rem; }
+    section:first-child { border-top: 0; padding-top: 0; }
+    h2 {
+      counter-increment: section;
+      font: 500 clamp(2rem, 1.4rem + 2vw, 3rem)/1.02 var(--serif);
+      letter-spacing: -0.02em;
+      margin-bottom: 1.25rem;
+    }
+    h2::before { content: counter(section, decimal-leading-zero); display: block; font: 500 0.8rem var(--sans); letter-spacing: 0.08em; color: var(--accent); margin-bottom: 0.75rem; }
+    h3 { font: 500 1.35rem/1.2 var(--serif); margin: 2rem 0 0.75rem; }
+    p + p, p + ul, ul + p, p + ol, ol + p, table + p { margin-top: 1rem; }
+    ul, ol { padding-left: 0; list-style: none; }
+    main ul li, main ol li { position: relative; padding-left: 1.6rem; margin-top: 0.45rem; }
+    main ul li::before { content: ''; position: absolute; left: 0.2rem; top: 0.82em; width: 0.75rem; height: 1.5px; background: var(--accent); }
+    main ol { counter-reset: step; }
+    main ol li { counter-increment: step; }
+    main ol li::before { content: counter(step); position: absolute; left: 0; color: var(--accent); font-weight: 500; }
+    .muted { color: var(--muted); }
+    code { font-size: 0.92em; background: var(--panel); padding: 0.1em 0.4em; border-radius: 4px; }
+    .table-wrap { overflow-x: auto; margin-top: 1rem; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+    th, td { text-align: left; vertical-align: top; padding: 0.7rem 0.75rem 0.7rem 0; border-bottom: 1px solid var(--line); }
+    th { color: var(--muted); font-weight: 500; font-size: 0.85rem; }
+    td:first-child { font-weight: 500; white-space: nowrap; padding-right: 1.5rem; }
+    details { border-bottom: 1px solid var(--line); }
+    details:first-of-type { border-top: 1px solid var(--line); }
+    summary { cursor: pointer; padding: 1rem 0; font-weight: 500; list-style: none; display: flex; justify-content: space-between; gap: 1rem; }
+    summary::-webkit-details-marker { display: none; }
+    summary::after { content: '+'; color: var(--accent); font-size: 1.3rem; line-height: 1; }
+    details[open] summary::after { content: '\2212'; }
+    details > p { padding-bottom: 1.25rem; color: var(--muted); }
+    .card { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: clamp(1.25rem, 3vw, 2rem); margin-top: 1.5rem; }
+    .card .pill { margin-top: 1.25rem; }
+    footer { border-top: 1px solid var(--line); padding: 2rem clamp(1.25rem, 5vw, 4rem); color: var(--muted); font-size: 0.85rem; text-align: center; }
+    @media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
+    html { scroll-behavior: smooth; }
+  </style>
+</head>
+<body>
+  <a class="skip" href="#content">Skip to content</a>
+
+  <header class="hero">
+    <p class="label">Shopify theme documentation, version 1.0.0</p>
+    <h1>Tahvia</h1>
+    <p class="lede">A theme for brands that sell one hero product. The home page tells the product's story while customers scroll, and the specs count up section by section.</p>
+    <div class="meta">
+      <a class="pill pill--primary" href="#getting-started">Get started</a>
+      <a class="pill" href="#support">Contact support</a>
+    </div>
+  </header>
+
+  <div class="layout">
+    <nav class="toc" aria-label="Contents">
+      <p>Contents</p>
+      <ol>
+        <li><a href="#getting-started">Getting started</a></li>
+        <li><a href="#settings">Theme settings</a></li>
+        <li><a href="#sections">Sections</a></li>
+        <li><a href="#product">Product pages</a></li>
+        <li><a href="#dial">The dial light</a></li>
+        <li><a href="#accessibility">Accessibility and speed</a></li>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a href="#support">Support</a></li>
+        <li><a href="#releases">Release notes</a></li>
+      </ol>
+    </nav>
+
+    <main id="content">
+      <section id="getting-started">
+        <h2>Getting started</h2>
+        <ol>
+          <li>Duplicate your current theme before you change themes. Customizations made to another theme do not carry over.</li>
+          <li>In <strong>Online Store &gt; Themes</strong>, add Tahvia and select <strong>Customize</strong>.</li>
+          <li>Pick your hero product in the <strong>Dial hero</strong> section on the home page.</li>
+          <li>Upload product images with a transparent background (.png, 2000 x 2000px recommended). Tahvia places them on the dial, so a cut-out object looks best.</li>
+          <li>In <strong>Theme settings &gt; Colors</strong>, pick the dial color scheme. Every section with the dial background uses it.</li>
+        </ol>
+      </section>
+
+      <section id="settings">
+        <h2>Theme settings</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th scope="col">Group</th><th scope="col">What you can change</th></tr></thead>
+            <tbody>
+              <tr><td>Logo and favicon</td><td>Logo (landscape or portrait), logo height on desktop and mobile, favicon.</td></tr>
+              <tr><td>Colors</td><td>Four color schemes (background, gradient, text, secondary text, buttons, accent, inputs), dial color scheme, dial light color and intensity.</td></tr>
+              <tr><td>Typography</td><td>Heading, body and number fonts from the Shopify font library, heading size and case, body size.</td></tr>
+              <tr><td>Layout</td><td>Page width, side margins on desktop and mobile.</td></tr>
+              <tr><td>Buttons and inputs</td><td>Button, input and image corner radius.</td></tr>
+              <tr><td>Animations</td><td>Dial light, reveal on scroll, page transitions, real-time seconds hands.</td></tr>
+              <tr><td>Product cards</td><td>Image ratio, second image on hover, vendor.</td></tr>
+              <tr><td>Cart</td><td>Drawer or page, order note, vendor.</td></tr>
+              <tr><td>Search</td><td>Search suggestions, prices in suggestions.</td></tr>
+              <tr><td>Social media</td><td>Links to your accounts, shown in the footer and on the password page.</td></tr>
+              <tr><td>Currency format</td><td>Show currency codes.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="muted">Visitors who turn on reduced motion on their device always see a still version of the theme, whatever the animation settings are.</p>
+      </section>
+
+      <section id="sections">
+        <h2>Sections</h2>
+        <p>Every section can be added, removed and reordered on any page that supports sections.</p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th scope="col">Section</th><th scope="col">What it does</th></tr></thead>
+            <tbody>
+              <tr><td>Dial hero</td><td>Product image inside a ring of hour indices, a real-time seconds hand, the visitor's local time, a large title, tagline, key facts, price and two buttons.</td></tr>
+              <tr><td>Story chapters</td><td>One block per chapter. The image turns with each chapter while the text scrolls. Chapters sit on the hour markers of the dial.</td></tr>
+              <tr><td>Spec sheet</td><td>One block per spec. Numbers count up when they appear. Text values are shown as written.</td></tr>
+              <tr><td>Exploded view</td><td>An annotated image with numbered callouts. Set each callout's position in percent.</td></tr>
+              <tr><td>Page header</td><td>Large title, introduction and full-width image for pages such as About.</td></tr>
+              <tr><td>Quotes</td><td>The first quote is shown large, the others in two columns.</td></tr>
+              <tr><td>Image with text</td><td>Image left or right, four ratios, focal point support.</td></tr>
+              <tr><td>Featured product</td><td>A complete buy box anywhere on a page. Supports app blocks.</td></tr>
+              <tr><td>Questions</td><td>Accordion with optional FAQ structured data for search engines.</td></tr>
+              <tr><td>Featured collection</td><td>Product grid from a collection.</td></tr>
+              <tr><td>Collection list</td><td>Collections with images and product counts.</td></tr>
+              <tr><td>Video</td><td>Uploaded video, YouTube or Vimeo, loaded when the customer presses play.</td></tr>
+              <tr><td>Rich text</td><td>Headings, text and buttons.</td></tr>
+              <tr><td>Email signup</td><td>Adds subscribers to your customer list with the newsletter tag.</td></tr>
+              <tr><td>Custom Liquid</td><td>Add app snippets or your own code.</td></tr>
+              <tr><td>Apps</td><td>Holds app blocks.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <h3>Header and footer</h3>
+        <p>The header group holds the announcement bar and the header (main menu with full-width submenus, search, account and cart). The footer group holds the footer: menus, text, email signup, app blocks, country and language selectors, payment icons, Follow on Shop and policy links.</p>
+        <h3>Page templates</h3>
+        <ul>
+          <li><strong>page</strong>: title and side menu in a sticky column, text on the right, a help card at the end. Used for shipping, warranty and similar pages.</li>
+          <li><strong>page.about</strong>: a story page made of sections.</li>
+          <li><strong>page.contact</strong>: contact details on the left, the form on the right.</li>
+        </ul>
+      </section>
+
+      <section id="product">
+        <h2>Product pages</h2>
+        <p>The product information section is made of blocks: vendor, title, price, SKU, inventory status, variant picker, quantity selector, buy buttons, description, collapsible rows, share, complementary products, text, Custom Liquid and app blocks.</p>
+        <ul>
+          <li>Variant images: the gallery shows the image assigned to the selected variant.</li>
+          <li>Swatches: set a color or image on option values in the product admin.</li>
+          <li>Unit prices, compare-at prices, sale and sold out states update with the variant.</li>
+          <li>Dynamic checkout buttons (on by default) and the Shop Pay Installments banner.</li>
+          <li>Pickup availability, related and complementary products (Search and Discovery app).</li>
+          <li>Gift card recipient form.</li>
+          <li>Images, videos, YouTube or Vimeo videos and 3D models with "View in your space".</li>
+          <li>Selling plans (subscriptions) when an app provides them.</li>
+        </ul>
+        <p>To tell the full story on the product page, create a product template that adds Story chapters, Spec sheet and Exploded view under the product information, then assign it to your hero product in the product admin (<strong>Theme template</strong>).</p>
+      </section>
+
+      <section id="dial">
+        <h2>The dial light</h2>
+        <p>The background of the dial sections is a sunray dial: fine radial brushing with a band of light that turns with the customer's real seconds, scroll position and pointer.</p>
+        <ul>
+          <li>It starts after the page has loaded, so it never slows the first paint.</li>
+          <li>It pauses when no dial section is on screen or when the tab is hidden.</li>
+          <li>Without WebGL, with Save-Data, with reduced motion, on devices without a graphics card, or with <strong>Show animated dial light</strong> turned off, customers see a still brushed dial drawn with CSS.</li>
+        </ul>
+      </section>
+
+      <section id="accessibility">
+        <h2>Accessibility and speed</h2>
+        <ul>
+          <li>Skip link, visible focus on every control, keyboard-operable menus, drawers and dialogs. Escape closes them and focus returns to the control that opened them.</li>
+          <li>Every image has alt text from the product admin or the image settings.</li>
+          <li>Text contrast meets WCAG AA in the four default color schemes. Check contrast when you change colors.</li>
+          <li>No third-party libraries. JavaScript is split into modules that load only on pages that use them.</li>
+        </ul>
+      </section>
+
+      <section id="faq">
+        <h2>FAQ</h2>
+        <details>
+          <summary>Can I use Tahvia for a store with many products?</summary>
+          <p>Yes. Collection, search and cart pages are complete. The home page is designed around one product.</p>
+        </details>
+        <details>
+          <summary>My product image has a white background.</summary>
+          <p>It works, but the dial shows around it as a square. Remove the background in the Shopify admin image editor or upload a .png with transparency.</p>
+        </details>
+        <details>
+          <summary>How do I link the hero button to the buy box on the home page?</summary>
+          <p>Set the featured product section's anchor ID (default <code>buy</code>) and use <code>#buy</code> as the button link.</p>
+        </details>
+        <details>
+          <summary>How do I turn off all motion?</summary>
+          <p>Turn off the four settings in Theme settings &gt; Animations.</p>
+        </details>
+        <details>
+          <summary>Where do the policy pages get their text?</summary>
+          <p>From Settings &gt; Policies in your Shopify admin. Tahvia styles them with the same layout as your help pages.</p>
+        </details>
+        <details>
+          <summary>Can you customize the theme for me?</summary>
+          <p>Custom code is not covered by support. Duplicate your theme before any change, and hire a Shopify Partner for custom work.</p>
+        </details>
+      </section>
+
+      <section id="support">
+        <h2>Support</h2>
+        <p>We reply within 2 business days, Monday to Friday. Before you write, duplicate your theme in Online Store &gt; Themes. Include your store URL, the page, your browser and the steps that show the problem.</p>
+        <div class="card">
+          <p><strong>Contact Tahvia support</strong></p>
+          <p class="muted">Send your question with a screenshot through the support form.</p>
+          <a class="pill pill--primary" href="https://tally.so/r/1WAWDW">Open the support form</a>
+          <p class="muted" style="margin-top: 1rem">Or email <a href="mailto:tahafilali2022@gmail.com">tahafilali2022@gmail.com</a></p>
+        </div>
+      </section>
+
+      <section id="releases">
+        <h2>Release notes</h2>
+        <h3>1.0.0</h3>
+        <ul>
+          <li>Dial hero with a real-time seconds hand and the dial light crossing the product image.</li>
+          <li>WebGL sunray dial behind dial sections, with a CSS fallback.</li>
+          <li>Story chapters on the hour markers of the dial, with a sweeping image change.</li>
+          <li>Spec sheet with counters that tick up at 8 beats per second.</li>
+          <li>Exploded view with numbered callouts linked to a legend.</li>
+          <li>Sweep page transition in supported browsers.</li>
+          <li>Full Online Store 2.0 support: JSON templates, section groups, app blocks, Custom Liquid.</li>
+          <li>Product page with variant images, swatches, unit prices, pickup availability, complementary products, gift card recipient form, rich media and 3D models.</li>
+          <li>Cart drawer and cart page with discounts, selling plans, order note and accelerated checkout.</li>
+          <li>Predictive search, storefront filtering and sorting, country and language selectors.</li>
+          <li>English and French storefront translations.</li>
+        </ul>
+      </section>
+    </main>
+  </div>
+
+  <footer>Tahvia theme for Shopify. Version 1.0.0.</footer>
+</body>
+</html>
